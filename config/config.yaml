@@ -1,1 +1,44 @@
+# Incident AI Analyzer - Application Configuration
 
+application:
+  name: "incident-ai-analyzer"
+  version: "0.1.0"
+  environment: "development"
+
+# Input and output locations
+paths:
+  incidents: "data/incidents"
+  alerts: "data/alerts"
+  logs: "data/logs"
+  kb: "data/kb"
+  output: "output"
+
+# Analysis settings
+analysis:
+  max_kb_results: 5
+  minimum_kb_match_score: 0.60
+  confidence_levels:
+    - "low"
+    - "medium"
+    - "high"
+
+# LLM configuration
+# The API key should NEVER be stored here.
+# Store secrets in environment variables or GitHub Secrets.
+llm:
+  provider: "openai"
+  model: "gpt-4.1-mini"
+  temperature: 0.1
+  max_tokens: 2000
+
+# Logging
+logging:
+  level: "INFO"
+  format: "standard"
+
+# Output settings
+output:
+  format: "json"
+  include_evidence: true
+  include_kb_references: true
+  include_confidence: true

@@ -1,1 +1,12 @@
+kb_sources:
 
+name: "local_kb"
+type: "local"
+enabled: true
+path: "data/kb"
+file_pattern: "*.md"
+
+search:
+enabled: true
+max_results: 5
+minimum_match_score: 0.60
