@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "incident.schema.json",
+  "title": "Incident",
+  "description": "Schema for a major IT incident analyzed by the Incident AI Analyzer.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "incident_id",
+    "title",
+    "severity",
+    "status",
+    "service",
+    "environment",
+    "description",
+    "start_time"
+  ],
+  "properties": {
+    "incident_id": {
+      "type": "string",
+      "description": "Unique identifier for the incident.",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "description": "Short title describing the incident.",
+      "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "description": "Severity level assigned to the incident.",
+      "enum": [
+        "SEV1",
+        "SEV2",
+        "SEV3",
+        "SEV4"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "description": "Current status of the incident.",
+      "enum": [
+        "open",
+        "investigating",
+        "mitigating",
+        "resolved",
+        "closed"
+      ]
+    },
+    "service": {
+      "type": "string",
+      "description": "Primary service or application affected by the incident.",
+      "minLength": 1
+    },
+    "environment": {
+      "type": "string",
+      "description": "Environment where the incident occurred.",
+      "enum": [
+        "production",
+        "staging",
+        "development",
+        "test"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of the incident and observed impact.",
+      "minLength": 1
+    },
+    "impact": {
+      "type": "string",
+      "description": "Description of the business or technical impact."
+    },
+    "start_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time when the incident started."
+    },
+    "end_time": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "Time when the incident ended, if resolved."
+    },
+    "affected_components": {
+      "type": "array",
+      "description": "Applications, services, infrastructure components, or dependencies affected.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "symptoms": {
+      "type": "array",
+      "description": "Known symptoms observed during the incident.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "error_messages": {
+      "type": "array",
+      "description": "Important error messages associated with the incident.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "business_impact": {
+      "type": "object",
+      "description": "Structured description of the business impact.",
+      "additionalProperties": false,
+      "properties": {
+        "customers_affected": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "transactions_affected": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "regions_affected": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "assigned_team": {
+      "type": "string",
+      "description": "Team responsible for investigating or resolving the incident."
+    },
+    "reported_by": {
+      "type": "string",
+      "description": "Person, monitoring system, or team that reported the incident."
+    },
+    "related_incidents": {
+      "type": "array",
+      "description": "Identifiers of related or previous incidents.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional non-sensitive incident metadata.",
+      "additionalProperties": true
+    }
+  }
+}
