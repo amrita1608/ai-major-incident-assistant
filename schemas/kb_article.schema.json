@@ -1,0 +1,147 @@
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "kb_article.schema.json",
+  "title": "Knowledge Base Article",
+  "description": "Schema for a knowledge base article used by the Incident AI Analyzer to identify known symptoms, probable root causes, and workarounds.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "article_id",
+    "title",
+    "category",
+    "content"
+  ],
+  "properties": {
+    "article_id": {
+      "type": "string",
+      "description": "Unique identifier for the knowledge base article.",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the knowledge base article.",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "description": "Category of the knowledge base article.",
+      "enum": [
+        "incident",
+        "troubleshooting",
+        "root_cause",
+        "workaround",
+        "known_error",
+        "runbook",
+        "other"
+      ]
+    },
+    "service": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Service or application to which the article applies."
+    },
+    "environment": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Environment to which the article applies.",
+      "enum": [
+        "production",
+        "staging",
+        "development",
+        "test",
+        null
+      ]
+    },
+    "summary": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Short summary of the knowledge base article."
+    },
+    "symptoms": {
+      "type": "array",
+      "description": "Symptoms or observable conditions associated with the known issue.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "error_messages": {
+      "type": "array",
+      "description": "Known error messages associated with the issue.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "probable_root_cause": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Known or probable root cause documented in the article."
+    },
+    "workaround": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Known workaround or mitigation for the issue."
+    },
+    "resolution": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Permanent resolution or corrective action documented in the article."
+    },
+    "content": {
+      "type": "string",
+      "description": "Full content of the knowledge base article.",
+      "minLength": 1
+    },
+    "tags": {
+      "type": "array",
+      "description": "Keywords or tags used to improve knowledge base matching.",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "source": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Source system or location where the article originated."
+    },
+    "source_url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri",
+      "description": "URL of the original knowledge base article, if available."
+    },
+    "last_updated": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "Date and time when the knowledge base article was last updated."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional non-sensitive metadata associated with the article.",
+      "additionalProperties": true
+    }
+  }
+}
+```
