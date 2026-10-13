@@ -1,0 +1,38 @@
+
+{
+  "incident_id": "INC-2026-1042",
+  "summary": "Production checkout API experiencing elevated latency and database connection timeouts",
+  "impact": "Some customers cannot complete purchases. Checkout requests are intermittently failing.",
+  "affected_service": "Checkout API",
+  "environment": "Production",
+  "alerts": [
+    {
+      "alert_id": "ALT-1042-01",
+      "name": "Checkout API latency above threshold",
+      "severity": "critical",
+      "status": "firing",
+      "timestamp": "2026-10-13T10:15:00+05:30",
+      "description": "P95 latency has exceeded the configured threshold for 10 minutes."
+    },
+    {
+      "alert_id": "ALT-1042-02",
+      "name": "Database connection pool exhausted",
+      "severity": "critical",
+      "status": "firing",
+      "timestamp": "2026-10-13T10:16:00+05:30",
+      "description": "Checkout application instances are unable to acquire database connections."
+    }
+  ],
+  "log_snippets": [
+    {
+      "source": "checkout-api",
+      "timestamp": "2026-10-13T10:15:30+05:30",
+      "message": "Timeout waiting to acquire connection from database pool."
+    },
+    {
+      "source": "checkout-api",
+      "timestamp": "2026-10-13T10:16:10+05:30",
+      "message": "Database connection acquisition failed after configured timeout."
+    }
+  ]
+}
