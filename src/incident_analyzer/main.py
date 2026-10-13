@@ -1,12 +1,11 @@
-
 """Command-line entry point for the incident analyzer."""
 
 import argparse
-import json
 import sys
 from pathlib import Path
 
 from incident_analyzer.analysis_engine import analyze_incident
+from incident_analyzer.email_drafter import draft_stakeholder_email
 from incident_analyzer.incident_loader import load_incident
 
 
@@ -14,7 +13,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
 def main() -> int:
-    """Load an incident, analyze it, and print JSON results."""
+    """Load an incident, analyze it, and optionally save outputs."""
     parser = argparse.ArgumentParser(
         description="Analyze a major incident using knowledge-base articles."
     )
@@ -28,6 +27,11 @@ def main() -> int:
         "--output",
         type=Path,
         help="Optional path to save the analysis JSON.",
+    )
+    parser.add_argument(
+        "--email-output",
+        type=Path,
+        help="Optional path to save a stakeholder email draft.",
     )
     args = parser.parse_args()
 
@@ -58,8 +62,29 @@ def main() -> int:
                 encoding="utf-8",
             )
             print(f"Analysis saved to: {output_path}")
-        else:
+        elif not args.email_output:
             print(result)
+
+        if args.email_output:
+            email_output_path = (
+                args.email_output
+                if args.email_output.is_absolute()
+                else Path.cwd() / args.email_output
+            )
+            email_output_path.parent.mkdir(
+                parents=True,
+                exist_ok=True,
+            )
+
+            email_draft = draft_stakeholder_email(
+                incident,
+                analysis,
+            )
+            email_output_path.write_text(
+                email_draft,
+                encoding="utf-8",
+            )
+            print(f"Stakeholder email draft saved to: {email_output_path}")
 
         return 0
 

@@ -33,7 +33,7 @@ dev = [
 
 
 [project.scripts]
-incident-analyzer = "incident_analyzer.cli:main"
+incident-analyzer = "incident_analyzer.main:main"
 
 
 [tool.setuptools]

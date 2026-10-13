@@ -3,6 +3,9 @@
   "incident_id": "INC-2026-1042",
   "summary": "Production checkout API experiencing elevated latency and database connection timeouts",
   "impact": "Some customers cannot complete purchases. Checkout requests are intermittently failing.",
+  "severity": "SEV-1",
+  "incident_owner": "Major Incident Team",
+  "next_update_time": "14:30 IST",
   "affected_service": "Checkout API",
   "environment": "Production",
   "alerts": [

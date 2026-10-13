@@ -76,3 +76,18 @@ class Incident(BaseModel):
         default=None,
         description="Environment where the incident occurred"
     )
+
+    severity: Optional[str] = Field(
+        default=None,
+        description="Incident severity, for example SEV-1 or SEV-2"
+    )
+
+    incident_owner: Optional[str] = Field(
+        default=None,
+        description="Person or team coordinating the incident"
+    )
+
+    next_update_time: Optional[str] = Field(
+        default=None,
+        description="Planned time for the next stakeholder update"
+    )
