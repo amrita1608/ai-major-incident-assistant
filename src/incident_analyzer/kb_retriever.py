@@ -1,4 +1,3 @@
-
 """Retrieve and rank knowledge-base articles for an incident."""
 
 import re
@@ -11,13 +10,54 @@ from models.incident import Incident
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 KB_DIR = PROJECT_ROOT / "knowledge_base"
 
+# Words that commonly occur in incident descriptions but carry little
+# information about the technical problem.
+STOP_WORDS = {
+    "a",
+    "an",
+    "and",
+    "are",
+    "as",
+    "at",
+    "be",
+    "been",
+    "but",
+    "by",
+    "for",
+    "from",
+    "has",
+    "have",
+    "in",
+    "is",
+    "it",
+    "its",
+    "of",
+    "on",
+    "or",
+    "our",
+    "the",
+    "their",
+    "there",
+    "this",
+    "to",
+    "was",
+    "were",
+    "when",
+    "with",
+    "working","api",
+    "application",
+    "applications",
+    "requests",
+    "services",
+}
+
 
 def _tokenize(text: str) -> set[str]:
-    """Convert text into normalized keyword tokens."""
+    """Convert text into normalized, meaningful keyword tokens."""
     return {
         token
         for token in re.findall(r"[a-z0-9]+", text.lower())
-        if len(token) > 1
+        if len(token) > 1 and token not in STOP_WORDS
     }
 
 
@@ -96,8 +136,8 @@ def retrieve_knowledge_articles(
     """
     Return the most relevant knowledge articles for an incident.
 
-    Articles are ranked by keyword overlap. This is a baseline retrieval
-    method, not semantic search or proof of a root cause.
+    Articles are ranked by meaningful keyword overlap. This is a baseline
+    retrieval method, not semantic search or proof of a root cause.
     """
     if top_k < 1:
         raise ValueError("top_k must be at least 1")
@@ -124,12 +164,15 @@ def retrieve_knowledge_articles(
             ]
         )
         article_tokens = _tokenize(searchable_text)
-        score = len(incident_tokens & article_tokens)
+        overlap = incident_tokens & article_tokens
 
-        if score > 0:
-            scored_articles.append(
-                (score, article.article_id, article)
-            )
+        # Require at least two distinct meaningful terms. A single shared
+        # word is too weak to establish a useful keyword match.
+        if len(overlap) < 2:
+            continue
+
+        score = len(overlap)
+        scored_articles.append((score, article.article_id, article))
 
     scored_articles.sort(key=lambda item: (-item[0], item[1]))
 
